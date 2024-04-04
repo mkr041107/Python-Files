@@ -11,7 +11,7 @@ if answer == 1:
     Num = 0
     sum = 0
 
-    while Num <500000000000000000000000000000000000000000000000000000000000000:
+    while Num <115132219018763992565095597973971522402:
         Num +=1
         digits = [int(digit)for digit in str(Num)]
         length = len(digits)
