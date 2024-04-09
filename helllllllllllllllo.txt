@@ -1,0 +1,25 @@
+Minecraft 1 12, the Java Edition, introduced a new advancement system.
+It replaced the old achievement system with a more flexible one.
+Advancements can be customized using JSON files.
+The UI is tab-based, with five main tabs: Minecraft, Adventure, Nether, The End, and Husbandry.
+The UI supports more tabs and is data-driven, allowing for customization.
+Rewards for advancements include recipes, loot, experience, and functions.
+Only default "challenge" advancements grant experience.
+A pop-up "toast" notification appears when players advance.
+The advancement system features a new sliding effect.
+Advancements come in two colors: yellow for normal and pink for "challenge".
+A number display tracks progress for multi-requirement advancements.
+Minecraft 1 12 added new mobs and biomes, enhancing the game's world.
+The game's music and sound effects were produced by Daniel Rosenfeld, known as C418.
+Sound effects were created using foley techniques, adding depth to the game.
+The game's sound design includes unique sounds for grass blocks and spiders.
+Minecraft 1 12 introduced new blocks and items, expanding the game's creative possibilities.
+The game supports both single-player and multiplayer modes.
+Minecraft 1 12 has received critical acclaim and numerous awards.
+The game has been used in educational settings for teaching various subjects.
+Minecraft 1 12 was a significant update, introducing new features and improvements.
+The update included changes to the game's mechanics and graphics.
+Minecraft 1 12 added new challenges and quests for players to complete.
+The update also introduced new mobs and creatures, enhancing the game's ecosystem.
+Minecraft 1 12 improved the game's performance and stability.
+The update was well-received by the Minecraft community, who appreciated the new features and improvements.
