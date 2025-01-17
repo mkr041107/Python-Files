@@ -1,4 +1,5 @@
 import random
+
 word_list = ["abandon", "ability", "absence", "academy", "account", "accused", "achieve", "acquire", "address", "advance",
 "adverse", "advised", "adviser", "against", "airline", "airport", "alcohol", "alleged", "already", "analyst",
 "ancient", "another", "anxiety", "anxious", "anybody", "applied", "arrange", "arrival", "article", "assault",
@@ -52,57 +53,108 @@ word_list = ["abandon", "ability", "absence", "academy", "account", "accused", "
 "visitor", "vitamin", "voltage", "volunteer", "warning", "welfare", "western", "whisper", "widely", "window", 
 "witness", "wonder", "working", "writing", "yawning", "yearly", "yielding", "yogurt", "younger", "zebra", 
 "zephyr", "zigzag", "zodiac", "zombie", "zone", "zoom"]
-# Function to generate a random number between 1 and 26
 
-# Function to generate a random number between 1 and 26
-def random_alphabetic_number():
-    return random.randint(1, 26)
+word_list = [word.strip().lower() for word in word_list if word.strip()]
+random.shuffle(word_list)
 
-# Function to convert numbers to letters
-def number_to_letter(number):
-    return chr(ord('a') + number - 1)
-
-# Function to check if the word can be placed in the grid
-def can_place_word(grid, word, x, y, direction):
-    rows, cols = len(grid), len(grid[0])
-    for i in range(len(word)):
-        nx, ny = x + direction[0] * i, y + direction[1] * i
-        # Check if the position is within bounds and not already occupied
-        if not (0 <= nx < rows and 0 <= ny < cols) or grid[nx][ny] is not None:
-            return False
-    return True
-
-# Function to place a word in the grid
-def place_word(grid, word, x, y, direction):
-    for i in range(len(word)):
-        nx, ny = x + direction[0] * i, y + direction[1] * i
-        grid[nx][ny] = word[i]
-
-# Function to generate a 5x5 grid and place words in it
 def generate_grid(word_list, grid_size=5):
-    grid = [[None for _ in range(grid_size)] for _ in range(grid_size)]
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (1, 1), (-1, 1), (1, -1)]
+    grid = [['.' for _ in range(grid_size)] for _ in range(grid_size)]
+    directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
     
-    # Select 20 random words from the word list
-    #selected_words = random.sample(word_list, 20)
-    selected_words = "zoom"
+
+    def place_word(grid, word, direction):
+        rows, cols = len(grid), len(grid[0])
+        start_x, start_y = random.randint(0, rows - 1), random.randint(0, cols - 1)
+    
+        for i in range(len(word)):
+            new_x, new_y = start_x + direction[0] * i, start_y + direction[1] * i
+            
+            if 0 <= new_x < rows and 0 <= new_y < cols:
+                grid[new_x][new_y] = word[i]
+            else:
+           
+                return False
+        
+        return True
+
+    def find_best_direction(grid, word):
+        best_score = float('-inf')
+        best_direction = None
+        
+        for direction in directions:
+            score = 0
+            
+            for i in range(len(word)):
+                new_x, new_y = grid_size // 2 + direction[0] * i, grid_size // 2 + direction[1] * i
+                
+                if 0 <= new_x < grid_size and 0 <= new_y < grid_size:
+                    score += 1
+                else:
+                    break
+            
+            if score > best_score:
+                best_score = score
+                best_direction = direction
+        
+        return best_direction
+
+    def place_words(grid, word_list):
+        random.shuffle(word_list)
+        
+        for word in word_list:
+            best_direction = find_best_direction(grid, word)
+            
+            if place_word(grid, word, best_direction):
+                return True
+        
+        return False
+
+    # Main grid generation loop
+    while len(word_list) > 0:
+        if not place_words(grid, word_list[:]):
+            break
+    
+    
+        return True
+
+
+
+    
     # Place words in the grid
-    for word in selected_words:
+    for word in word_list:
         placed = False
-        while not placed:
-            x, y = random.randint(0, grid_size - 1), random.randint(0, grid_size - 1)
-            direction = random.choice(directions)
-            if can_place_word(grid, word, x, y, direction):
-                place_word(grid, word, x, y, direction)
-                placed = True
-    
+        attempts = 0
+
+        while not placed and attempts < max_attempts:
+            # Try all directions
+            for direction in directions:
+             if all(letter not in used_letters for letter in word):
+                if place_word_from_center(grid, word, direction):
+                    placed = True
+
+                    # Update used letters only after successful placement
+                    
+                    used_letters.update(word)
+                    attempts = 0
+                    break  # Exit the inner loop once word is placed
+                else:
+                    attempts += 1
+            else:
+                # If we've tried all directions without placing the word
+                attempts += 1
+
+        if not placed:
+            print(f"Warning: Could not place '{word}' after {max_attempts} attempts")
+
     return grid
 
-# Display the grid
+# Function to display the grid
 def print_grid(grid):
     for row in grid:
-        print(" ".join(cell if cell else '.' for cell in row))
+        print(" ".join(row))
+    
+    print(f"Remaining letters: {set('abcdefghijklmnopqrstuvwxyz') - set(cell for row in grid for cell in row)}")
 
-# Example of calling the function
-grid = generate_grid(word_list)  # You'll need to replace word_list with an actual list of words
+# Generate and print the grid
+grid = generate_grid(word_list)
 print_grid(grid)
