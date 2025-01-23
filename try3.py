@@ -4,44 +4,55 @@ import string
 def generate_squares(size=5):
     grid = [['_' for _ in range(size)] for _ in range(size)]
     
-    words_to_add = ["able", "back", "calm", "dive", "echo"]
+    words_to_add = ["able", "back", "calm", "dive", "echo", "firm", "glow", "hunt", "idle", "jump", "kind", "loom", "make", "nest", "open", "pace", "quiz", "rope", "save", "tide", "upon", "vine", "wisp", "xray", "yarn", "zest", "arch", "bold", "chat", "dusk", "ease", "flop", "gaze", "halt", "iced", "jolt", "keep", "lash", "mint", "neon", "oath", "peak", "quip", "rise", "slam", "tame", "undo", "veil", "wolf", "yawn"]
+    placed_words = set()
+
+    def place_word(word, orientation, row, col):
+        if orientation == 'h':
+            if col + len(word) > size:
+                return False  # Can't fit horizontally
+            grid[row][col:col+len(word)] = word  # Assign the entire word at once
+        else:
+            if row + len(word) > size:
+                return False  # Can't fit vertically
+            for i in range(len(word)):
+                if row + i >= size:
+                    return False  # Out of bounds
+                grid[row + i][col] = word[i]
+        
+        placed_words.add(word)
+        return True  # Word was successfully placed
+
+    def check_conflict(word, orientation, row, col):
+        if orientation == 'h':
+            for i in range(len(word)):
+                if col + i >= len(grid[0]) or grid[row][col + i] != '_' and grid[row][col + i] != word[i]:
+                    return True
+        elif orientation == 'v':
+            for i in range(len(word)):
+                if row + i >= len(grid) or grid[row + i][col] != '_' and grid[row + i][col] != word[i]:
+                    return True
+        return False
+
+    placed = 0
+    total_words = len(words_to_add)
+
     for word in words_to_add:
         orientation = random.choice(['h', 'v'])
-        placed = False
         
-        while not placed:
-            if orientation == 'h':
-                row = random.randint(0, size - 1)
-                col = random.randint(0, size - len(word))
-                
-                # Check if the word can be placed without conflicts
-                conflict = False
-                for i in range(len(word)):
-                    if grid[row][col + i] != '_' and grid[row][col + i] != word[i]:
-                        conflict = True
-                        break
-                
-                if not conflict:
-                    for i in range(len(word)):
-                        grid[row][col + i] = word[i]
-                    placed = True
-    
-            else:
-                row = random.randint(0, size - len(word))
-                col = random.randint(0, size - 1)
-                
-                # Check if the word can be placed without conflicts
-                conflict = False
-                for i in range(len(word)):
-                    if grid[row + i][col] != '_' and grid[row + i][col] != word[i]:
-                        conflict = True
-                        break
-                
-                if not conflict:
-                    for i in range(len(word)):
-                        grid[row + i][col] = word[i]
-                    placed = True
-    
+        if orientation == 'h':
+            row = random.randint(0, size - 1)
+            col = random.randint(0, size - len(word))
+        else:
+            row = random.randint(0, size - len(word))
+            col = random.randint(0, size - 1)
+
+        if check_conflict(word, orientation, row, col):
+            continue
+
+        if place_word(word, orientation, row, col):
+            placed += 1
+
     # Fill remaining spaces with random letters
     letters = string.ascii_lowercase
     for i in range(len(grid)):
@@ -82,11 +93,11 @@ def find_words(grid, words):
     return list(found_words)
 
 def main():
-    size = 7  # Increased size to accommodate more words
+    size = 5
     grid = generate_squares(size)
     print_grid(grid)
     
-    words_to_find = ["able", "back", "calm", "dive", "echo"]
+    words_to_find = ["able", "back", "calm", "dive", "echo", "firm", "glow", "hunt", "idle", "jump", "kind", "loom", "make", "nest", "open", "pace", "quiz", "rope", "save", "tide", "upon", "vine", "wisp", "xray", "yarn", "zest", "arch", "bold", "chat", "dusk", "ease", "flop", "gaze", "halt", "iced", "jolt", "keep", "lash", "mint", "neon", "oath", "peak", "quip", "rise", "slam", "tame", "undo", "veil", "wolf", "yawn"]
     found_words = find_words(grid, words_to_find)
     print("\nWords found:", ', '.join(found_words))
 
