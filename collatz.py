@@ -6,12 +6,13 @@ inum = 3
 steps = 0
 startt = time.time()
 nums = []
+numsnumlist = []
 numsnum = 0
 sequencenums = 0
 fin = True
 logging.basicConfig(filename='output.log', level=logging.INFO)
 
-while sequencenums < 1000000:  
+while sequencenums < 1000:  
     while num != 1:
      steps += 1
      if num % 2==0:
@@ -23,11 +24,12 @@ while sequencenums < 1000000:
     
     inum += 1
     num = inum
-    numsnumax = max(nums)
+    numsnum = len(nums)
     sequencenums += 1
-    print(f"\n Biggest Number Is {numsnumax}")
+    numsnumlist.append(numsnum)
+    print(f"\n Biggest Number Is {numsnum}")
     print (f"\n {inum}")
-    
+    nums.clear()
 
 
     
@@ -37,7 +39,8 @@ while sequencenums < 1000000:
 
 ms = (time.time() - startt) * 1000
 msrounded =round(ms)
-
+print(f"\nBigest Number Of All {max(numsnumlist)}")
+logging.info(f"\nBigest Number Of All {max(numsnumlist)}")
 logging.info(f"\n Final Time In Miliseconds: {msrounded}")
 
    
